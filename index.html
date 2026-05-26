@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html>
 <head>
@@ -8,8 +9,17 @@
   </script>
 
   <style>
-    body { margin: 0; height: 100vh; }
-    model-viewer { width: 100%; height: 100%; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 100%;
+    }
   </style>
 </head>
 
@@ -18,17 +28,36 @@
 <model-viewer
   id="viewer"
   ar
+  ar-modes="webxr scene-viewer quick-look"
+  ar-scale="fixed"
   camera-controls
   auto-rotate
-  style="width:100%;height:100%">
+  touch-action="pan-y"
+  shadow-intensity="2"
+  skybox-height="2m"
+  xr-environment
+  max-camera-orbit="auto 90deg auto"
+  alt="3D product model">
 </model-viewer>
 
 <script>
-  const modelUrl = new URLSearchParams(location.search).get("model");
+  const params = new URLSearchParams(window.location.search);
+
+  const modelUrl = params.get("model");
+  const iosModelUrl = params.get("ios");
+
+  const viewer = document.getElementById("viewer");
+
   if (modelUrl) {
-    document.getElementById("viewer").src = modelUrl;
+    viewer.src = modelUrl;
+  }
+
+  // Optional USDZ support for iPhone AR
+  if (iosModelUrl) {
+    viewer.setAttribute("ios-src", iosModelUrl);
   }
 </script>
 
 </body>
 </html>
+```
